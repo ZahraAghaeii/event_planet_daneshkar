@@ -14,4 +14,5 @@ urlpatterns = [
     path('api/v1/event/', include('event.urls')),
     path('api/v1/attribute/', include('attribute.urls')),
     path('api/v1/relation/', include('relation.urls')),
+    path('profile/', TemplateView.as_view(template_name='profile.html'), name='profile'),
 ]

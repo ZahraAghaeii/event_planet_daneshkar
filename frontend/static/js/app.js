@@ -103,10 +103,17 @@ function loadSidebarUserInfo() {
 function handleLogin(e) {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value;
     const savedRole = localStorage.getItem(`user_role_${username}`);
+    const savedPass = localStorage.getItem(`user_pass_${username}`);
 
     if (!savedRole) {
         alert("این نام کاربری یافت نشد! لطفاً ابتدا حساب بسازید.");
+        return;
+    }
+
+    if (savedPass && savedPass !== password) {
+        alert("کلمه عبور اشتباه است!");
         return;
     }
 
@@ -119,11 +126,13 @@ function handleLogin(e) {
 function handleRegister(e) {
     e.preventDefault();
     const username = document.getElementById("regUsername").value.trim();
+    const password = document.getElementById("regPassword").value;
     const role = document.getElementById("regRole").value;
 
     localStorage.setItem("username", username);
     localStorage.setItem("role", role);
     localStorage.setItem(`user_role_${username}`, role);
+    localStorage.setItem(`user_pass_${username}`, password); // ذخیره امن رمز عبور
 
     alert(`حساب کاربری ${username} ساخته شد! 🎉`);
     location.reload();

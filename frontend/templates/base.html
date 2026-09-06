@@ -6,7 +6,7 @@
     <title>{% block title %}پلتفرم هوشمند مدیریت رویداد | Event Planet{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/static/css/style.css?v=36.0">
+    <link rel="stylesheet" href="/static/css/style.css?v=38.0">
     <style>
         .extra-small { font-size: 0.78rem; }
         ::placeholder { color: #94a3b8 !important; opacity: 1; }
@@ -28,15 +28,18 @@
                     <span id="sidebarUserRole" class="badge bg-secondary">نقش: بازدیدکننده</span>
                 </div>
                 <div class="list-group list-group-flush rounded-3 overflow-hidden">
-                    <button class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3" onclick="resetFilters()">
+                    <a href="/" class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3 text-decoration-none">
                         <i class="bi bi-house-door text-primary me-2"></i> صفحه اصلی و همه رویدادها
-                    </button>
-                    <button class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3" onclick="filterMyRegistrations()">
+                    </a>
+                    <a href="/profile/" class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3 text-decoration-none">
+                        <i class="bi bi-person-gear text-info me-2"></i> تنظیمات پروفایل کاربری
+                    </a>
+                    <a href="/" onclick="setTimeout(filterMyRegistrations, 200)" class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3 text-decoration-none">
                         <i class="bi bi-journal-check text-success me-2"></i> رویدادهای ثبت‌نام‌شده من
-                    </button>
-                    <button id="organizerPanelBtn" class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3 d-none" onclick="filterMyEvents()">
+                    </a>
+                    <a href="/" onclick="setTimeout(filterMyEvents, 200)" id="organizerPanelBtn" class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3 text-decoration-none d-none">
                         <i class="bi bi-calendar-plus text-warning me-2"></i> مدیریت رویدادهای من (برگزارکننده)
-                    </button>
+                    </a>
                 </div>
             </div>
             <div id="sidebarAuthArea" class="mt-3"></div>
@@ -50,7 +53,7 @@
                 <button class="btn btn-outline-secondary rounded-3 px-3 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#userSidebar">
                     <i class="bi bi-list fs-5"></i>
                 </button>
-                <a class="navbar-brand fw-bold fs-4 m-0 text-gradient" href="#">🌐 Event Planet</a>
+                <a class="navbar-brand fw-bold fs-4 m-0 text-gradient" href="/">🌐 Event Planet</a>
             </div>
             <div class="d-flex align-items-center gap-3">
                 <button class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="toggleTheme()" id="themeToggleBtn">
@@ -203,6 +206,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/app.js?v=36.0"></script>
+    <script src="/static/js/app.js?v=38.0"></script>
 </body>
 </html>

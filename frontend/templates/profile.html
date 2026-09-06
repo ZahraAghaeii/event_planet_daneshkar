@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}پروفایل کاربری | Event Planet{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 700px;">
+    <div class="card border-0 shadow-lg rounded-4 p-4 bg-glass border border-secondary">
+        <div class="text-center mb-4">
+            <div class="avatar-circle mx-auto mb-3 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                <i class="bi bi-person-fill fs-1"></i>
+            </div>
+            <h3 class="fw-bold" id="profileUsernameDisplay">نام کاربری</h3>
+            <span id="profileRoleBadge" class="badge bg-secondary mt-1">نقش کاربری</span>
+        </div>
+
+        <form onsubmit="updateProfile(event)">
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold small">نام کاربری</label>
+                <input type="text" id="profileUsernameInput" class="form-control py-2" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold small">ایمیل</label>
+                <input type="email" id="profileEmailInput" class="form-control py-2" placeholder="email@example.com">
+            </div>
+            
+            <hr class="my-4">
+            <h6 class="fw-bold text-warning mb-3"><i class="bi bi-shield-lock"></i> تغییر رمز عبور امن</h6>
+
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold small">رمز عبور فعلی (Current Password)</label>
+                <input type="password" id="currentPasswordInput" class="form-control py-2" placeholder="••••••••">
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold small">رمز عبور جدید (New Password)</label>
+                <input type="password" id="newPasswordInput" class="form-control py-2" placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-bold mt-3">ذخیره تغییرات</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const currentUser = localStorage.getItem("username") || "مهمان";
+        const currentRole = localStorage.getItem("role") || "GUEST";
+        
+        document.getElementById("profileUsernameDisplay").innerText = currentUser;
+        document.getElementById("profileUsernameInput").value = currentUser;
+        
+        const badge = document.getElementById("profileRoleBadge");
+        if (currentRole === 'ORGANIZER') {
+            badge.innerText = "برگزارکننده رویداد";
+            badge.className = "badge bg-warning text-dark mt-1";
+        } else {
+            badge.innerText = "شرکت‌کننده";
+            badge.className = "badge bg-info mt-1";
+        }
+    });
+
+    function updateProfile(e) {
+        e.preventDefault();
+        const currentUser = localStorage.getItem("username");
+        const newUsername = document.getElementById("profileUsernameInput").value.trim();
+        const currentPassword = document.getElementById("currentPasswordInput").value;
+        const newPassword = document.getElementById("newPasswordInput").value;
+
+        const savedPassword = localStorage.getItem(`user_pass_${currentUser}`) || "";
+
+        // اگر کاربر رمز جدید وارد کرده بود، چک کن
+        if (newPassword) {
+            // اگر قبلاً رمزی ذخیره نشده بود یا رمز فعلی درست بود اجازه بده
+            if (savedPassword && currentPassword !== savedPassword) {
+                alert("رمز عبور فعلی اشتباه است!");
+                return;
+            }
+            localStorage.setItem(`user_pass_${currentUser}`, newPassword);
+        }
+
+        if (newUsername && newUsername !== currentUser) {
+            localStorage.setItem(`user_role_${newUsername}`, localStorage.getItem(`user_role_${currentUser}`));
+            localStorage.setItem(`user_pass_${newUsername}`, savedPassword || newPassword);
+            localStorage.setItem("username", newUsername);
+        }
+
+        alert("تغییرات پروفایل با موفقیت ذخیره شد! 🎉");
+        location.reload();
+    }
+</script>
+{% endblock %}
