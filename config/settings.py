@@ -51,7 +51,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # این خط حتماً چک شود
+        'DIRS': [BASE_DIR / 'frontend' / 'templates'],  # به‌روزرسانی شده برای پوشه جدید فرانت‌اند
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -112,11 +112,9 @@ USE_TZ = True
 
 # فایل‌های استاتیک
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR / 'frontend' / 'static']  # به‌روزرسانی شده برای پوشه جدید فرانت‌اند
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = 'user.CustomUser'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
