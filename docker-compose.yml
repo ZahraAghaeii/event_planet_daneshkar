@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: eventplanet_db
+    restart: always
+    environment:
+      POSTGRES_DB: event_planet_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: fati82
+    ports:
+      - "5433:5432"
+
+  web:
+    build: .
+    container_name: eventplanet_web
+    restart: always
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
