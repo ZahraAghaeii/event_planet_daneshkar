@@ -1,361 +1,50 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پلتفرم هوشمند مدیریت رویداد | Event Planet</title>
-    <!-- Bootstrap 5 RTL & Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/static/css/style.css?v=34.0">
-    <style>
-        .extra-small { font-size: 0.78rem; }
-        ::placeholder { color: #94a3b8 !important; opacity: 1; }
-    </style>
-</head>
-<body class="bg-app">
+{% extends 'base.html' %}
 
-    <!-- Sidebar (Offcanvas) Right Side -->
-    <div class="offcanvas offcanvas-start text-bg-dark border-start border-secondary" tabindex="-1" id="userSidebar" aria-labelledby="userSidebarLabel">
-        <div class="offcanvas-header border-bottom border-secondary">
-            <h5 class="offcanvas-title fw-bold text-gradient" id="userSidebarLabel"><i class="bi bi-speedometer2"></i> منوی مدیریت کاربری</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body d-flex flex-column justify-content-between">
-            <div>
-                <!-- User Profile Box -->
-                <div class="p-3 mb-4 rounded-4 bg-glass border border-secondary text-center">
-                    <div class="avatar-circle mb-2 mx-auto"><i class="bi bi-person-fill fs-2 text-info"></i></div>
-                    <h6 id="sidebarUsername" class="fw-bold mb-1">مهمان عزیز</h6>
-                    <span id="sidebarUserRole" class="badge bg-secondary">نقش: بازدیدکننده</span>
-                </div>
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0" id="catHeaderTitle">دسته‌بندی رویدادها</h3>
+    </div>
 
-                <!-- Navigation Links inside Sidebar -->
-                <div class="list-group list-group-flush rounded-3 overflow-hidden">
-                    <button class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3" onclick="resetFilters()">
-                        <i class="bi bi-house-door text-primary me-2"></i> صفحه اصلی و همه رویدادها
-                    </button>
-                    <button class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3" onclick="filterMyRegistrations()">
-                        <i class="bi bi-journal-check text-success me-2"></i> رویدادهای ثبت‌نام‌شده من
-                    </button>
-                    <button id="organizerPanelBtn" class="list-group-item list-group-item-action bg-transparent text-light border-secondary py-3 d-none" onclick="filterMyEvents()">
-                        <i class="bi bi-calendar-plus text-warning me-2"></i> مدیریت رویدادهای من (برگزارکننده)
-                    </button>
-                </div>
+    <div class="row g-4 mb-5">
+        <div class="col-md-3 col-6" onclick="handleCategoryClick('TOURNAMENT')">
+            <div class="cat-card-modern text-center p-4 rounded-4">
+                <div class="icon-box bg-warning-soft text-warning mx-auto mb-3"><i class="bi bi-trophy fs-3"></i></div>
+                <h5 class="fw-bold mt-2">تورنمنت</h5>
+                <p class="text-muted small mb-0">کلیک جهت ایجاد یا فیلتر مسابقات</p>
             </div>
-
-            <!-- Auth Actions in Sidebar -->
-            <div id="sidebarAuthArea" class="mt-3">
-                <!-- Dynamically filled via JS -->
+        </div>
+        <div class="col-md-3 col-6" onclick="handleCategoryClick('WEBINAR')">
+            <div class="cat-card-modern text-center p-4 rounded-4">
+                <div class="icon-box bg-info-soft text-info mx-auto mb-3"><i class="bi bi-camera-video fs-3"></i></div>
+                <h5 class="fw-bold mt-2">وبینار</h5>
+                <p class="text-muted small mb-0">کلیک جهت ایجاد یا فیلتر سمینارها</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6" onclick="handleCategoryClick('WORKSHOP')">
+            <div class="cat-card-modern text-center p-4 rounded-4">
+                <div class="icon-box bg-success-soft text-success mx-auto mb-3"><i class="bi bi-journal-bookmark fs-3"></i></div>
+                <h5 class="fw-bold mt-2">ورکشاپ</h5>
+                <p class="text-muted small mb-0">کلیک جهت ایجاد یا فیلتر کارگاه‌ها</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6" onclick="handleCategoryClick('SPORTS')">
+            <div class="cat-card-modern text-center p-4 rounded-4">
+                <div class="icon-box bg-danger-soft text-danger mx-auto mb-3"><i class="bi bi-dribbble fs-3"></i></div>
+                <h5 class="fw-bold mt-2">رویداد ورزشی</h5>
+                <p class="text-muted small mb-0">کلیک جهت ایجاد یا فیلتر مسابقات ورزشی</p>
             </div>
         </div>
     </div>
 
-    <!-- Main Navbar -->
-    <nav class="navbar navbar-custom sticky-top px-4 py-3">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-3">
-                <!-- Sidebar Toggle Button -->
-                <button class="btn btn-outline-secondary rounded-3 px-3 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#userSidebar">
-                    <i class="bi bi-list fs-5"></i>
-                </button>
-                <a class="navbar-brand fw-bold fs-4 m-0 text-gradient" href="#">🌐 Event Planet</a>
-            </div>
-            
-            <div class="d-flex align-items-center gap-3">
-                <!-- Theme Toggle Button -->
-                <button class="btn btn-outline-secondary btn-sm rounded-pill px-3" onclick="toggleTheme()" id="themeToggleBtn">
-                    <i class="bi bi-moon-stars"></i> دارک مود
-                </button>
-
-                <div id="userInfo" class="d-none"></div>
-                <button class="btn btn-primary btn-sm rounded-pill px-4" data-bs-toggle="offcanvas" data-bs-target="#userSidebar" id="topAuthBtn">ورود / ثبت‌نام</button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Container -->
-    <div class="container my-5">
-        
-        <!-- Category Cards Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold m-0" id="catHeaderTitle">دسته‌بندی رویدادها</h3>
-        </div>
-
-        <!-- 4 Category Cards -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-3 col-6" onclick="handleCategoryClick('TOURNAMENT')">
-                <div class="cat-card-modern text-center p-4 rounded-4">
-                    <div class="icon-box bg-warning-soft text-warning mx-auto mb-3"><i class="bi bi-trophy fs-3"></i></div>
-                    <h5 class="fw-bold mt-2">تورنمنت</h5>
-                    <p class="text-muted small mb-0">کلیک جهت ایجاد یا فیلتر مسابقات</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6" onclick="handleCategoryClick('WEBINAR')">
-                <div class="cat-card-modern text-center p-4 rounded-4">
-                    <div class="icon-box bg-info-soft text-info mx-auto mb-3"><i class="bi bi-camera-video fs-3"></i></div>
-                    <h5 class="fw-bold mt-2">وبینار</h5>
-                    <p class="text-muted small mb-0">کلیک جهت ایجاد یا فیلتر سمینارها</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6" onclick="handleCategoryClick('WORKSHOP')">
-                <div class="cat-card-modern text-center p-4 rounded-4">
-                    <div class="icon-box bg-success-soft text-success mx-auto mb-3"><i class="bi bi-journal-bookmark fs-3"></i></div>
-                    <h5 class="fw-bold mt-2">ورکشاپ</h5>
-                    <p class="text-muted small mb-0">کلیک جهت ایجاد یا فیلتر کارگاه‌ها</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6" onclick="handleCategoryClick('SPORTS')">
-                <div class="cat-card-modern text-center p-4 rounded-4">
-                    <div class="icon-box bg-danger-soft text-danger mx-auto mb-3"><i class="bi bi-dribbble fs-3"></i></div>
-                    <h5 class="fw-bold mt-2">رویداد ورزشی</h5>
-                    <p class="text-muted small mb-0">کلیک جهت ایجاد یا فیلتر مسابقات ورزشی</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Search Section -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
-            <h4 class="fw-bold mb-0" id="sectionTitle">رویدادهای منتشرشده</h4>
-            <div class="d-flex gap-2 w-100 w-md-auto">
-                <input type="text" id="searchInput" class="form-control search-box" placeholder="🔍 جستجوی عنوان رویداد..." onkeyup="handleSearch()">
-                <button class="btn btn-outline-secondary rounded-3 px-3" onclick="resetFilters()">همه</button>
-            </div>
-        </div>
-
-        <!-- Events Grid List -->
-        <div class="row g-4" id="eventsList"></div>
-
-    </div>
-
-    <!-- Class Management & Leaderboard Modal -->
-    <div class="modal fade" id="classManagementModal" tabindex="-1">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content rounded-4 shadow-lg">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold">🎓 مدیریت رویداد و رده‌بندی: <span id="modalClassName" class="text-primary"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    
-                    <!-- Tab Navigation -->
-                    <ul class="nav nav-pills mb-4 gap-2 border-bottom pb-3">
-                        <li class="nav-item">
-                            <button class="nav-link active fw-bold" id="tab-participants-btn" onclick="switchClassTab('participants')">👥 شرکت‌کنندگان و نمرات</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link fw-bold" id="tab-stages-btn" onclick="switchClassTab('stages')">📌 مراحل / جلسات رویداد (Stages)</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link fw-bold" id="tab-leaderboard-btn" onclick="switchClassTab('leaderboard')">🏆 جدول رده‌بندی</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link fw-bold" id="tab-feedback-btn" onclick="switchClassTab('feedbacks')">💬 نظرات و بازخوردها</button>
-                        </li>
-                    </ul>
-
-                    <!-- 1. Participants & Grading Section -->
-                    <div id="class-participants-section">
-                        <h6 class="fw-bold text-primary mb-3">لیست افراد ثبت‌نام‌شده:</h6>
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle rounded-3 overflow-hidden">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>نام شرکت‌کننده</th>
-                                        <th>وضعیت ثبت‌نام</th>
-                                        <th>نمره / امتیاز</th>
-                                        <th id="gradingHeader">عملیات نمره‌دهی</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="participantsTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- 2. Multi-Stage / Sessions Section -->
-                    <div id="class-stages-section" class="d-none">
-                        <!-- Form Add Stage (Only Organizer) -->
-                        <div id="addStageContainer" class="mb-4 p-3 rounded-3 border d-none">
-                            <h6 class="fw-bold text-warning mb-3">➕ تعریف مرحله / جلسه جدید برای این رویداد:</h6>
-                            <div class="row g-2 align-items-end">
-                                <div class="col-md-5">
-                                    <label class="form-label small fw-bold mb-1">عنوان مرحله یا جلسه</label>
-                                    <input type="text" id="stageTitleInput" class="form-control" placeholder="مثال: کوارتر اول / بازی فینال">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label small fw-bold mb-1">داور / مدرس / سخنران</label>
-                                    <input type="text" id="stageSpeakerInput" class="form-control" placeholder="مثال: داور اول (استاد رضایی)">
-                                </div>
-                                <div class="col-md-1">
-                                    <label class="form-label small fw-bold mb-1">ترتیب</label>
-                                    <input type="number" id="stageOrderInput" class="form-control text-center" value="1">
-                                </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-warning w-100 fw-bold" onclick="submitAddStage()">افزودن جلسه</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h6 class="fw-bold mb-3">لیست جلسات و مراحل تعریف‌شده:</h6>
-                        <div id="stagesListContainer" class="d-flex flex-column gap-2"></div>
-                    </div>
-
-                    <!-- 3. Leaderboard Section -->
-                    <div id="class-leaderboard-section" class="d-none">
-                        <h6 class="fw-bold text-warning mb-3">🏆 جدول رده‌بندی بر اساس نمرات برتر:</h6>
-                        <div class="table-responsive">
-                            <table class="table table-striped align-middle rounded-3 text-center">
-                                <thead class="table-primary">
-                                    <tr>
-                                        <th>رتبه</th>
-                                        <th>شرکت‌کننده</th>
-                                        <th>نمره کسب‌شده</th>
-                                        <th>وضعیت</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="leaderboardTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- 4. Feedback Section -->
-                    <div id="class-feedbacks-section" class="d-none">
-                        <div id="addFeedbackContainer" class="mb-4 p-3 rounded-3 border d-none">
-                            <h6 class="fw-bold text-success mb-2">ثبت بازخورد شما درباره این دوره:</h6>
-                            <textarea id="feedbackComment" class="form-control mb-2" rows="2" placeholder="نظر خود را بنویسید..."></textarea>
-                            <button class="btn btn-success btn-sm rounded-3 fw-bold" onclick="submitFeedback()">ارسال نظر</button>
-                        </div>
-                        
-                        <h6 class="fw-bold mb-3">نظرات شرکت‌کنندگان:</h6>
-                        <div id="feedbacksListContainer"></div>
-                    </div>
-
-                </div>
-            </div>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+        <h4 class="fw-bold mb-0" id="sectionTitle">رویدادهای منتشرشده</h4>
+        <div class="d-flex gap-2 w-100 w-md-auto">
+            <input type="text" id="searchInput" class="form-control search-box" placeholder="🔍 جستجوی عنوان رویداد..." onkeyup="handleSearch()">
+            <button class="btn btn-outline-secondary rounded-3 px-3" onclick="resetFilters()">همه</button>
         </div>
     </div>
 
-    <!-- Dynamic Create Event Modal -->
-    <div class="modal fade" id="createEventModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content rounded-4 shadow-lg">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold">➕ ایجاد رویداد جدید</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form id="createEventForm" onsubmit="submitCreateEvent(event)">
-                        <input type="hidden" id="eventCategoryInput">
-                        
-                        <!-- Base Fields -->
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-8">
-                                <label class="form-label small fw-bold">عنوان رویداد</label>
-                                <input type="text" id="evtTitle" class="form-control" required placeholder="عنوان رویداد را وارد کنید">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label small fw-bold">ظرفیت کل (نفر)</label>
-                                <input type="number" id="evtCapacity" class="form-control" required min="1" value="15">
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold">تاریخ و زمان شروع</label>
-                                <input type="datetime-local" id="evtStartDate" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold">تاریخ و زمان پایان</label>
-                                <input type="datetime-local" id="evtEndDate" class="form-control" required>
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label small fw-bold">انتخاب تصویر کاور رویداد</label>
-                                <input type="file" id="evtImageFile" class="form-control" accept="image/*">
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label small fw-bold">توضیحات کامل رویداد</label>
-                                <textarea id="evtDescription" class="form-control" rows="3" required placeholder="توضیحات مربوط به رویداد..."></textarea>
-                            </div>
-                        </div>
-
-                        <hr class="my-4">
-                        <h6 class="fw-bold text-warning mb-3"><i class="bi bi-sliders"></i> ویژگی‌های اختصاصی (<span id="catDynamicLabel"></span>)</h6>
-
-                        <div id="dynamicFieldsContainer" class="row g-3"></div>
-
-                        <div class="mt-4 text-end">
-                            <button type="button" class="btn btn-secondary rounded-3 me-2" data-bs-dismiss="modal">انصراف</button>
-                            <button type="submit" class="btn btn-success rounded-3 px-4 fw-bold">ایجاد رویداد (حالت Draft)</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Auth Modal -->
-    <div class="modal fade" id="authModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 shadow-lg p-3">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold" id="authModalTitle">ورود به حساب کاربری</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <!-- Login Form -->
-                    <div id="login-form-container">
-                        <form onsubmit="handleLogin(event)">
-                            <div class="mb-3 text-start">
-                                <label class="form-label fw-bold small">نام کاربری</label>
-                                <input type="text" id="loginUsername" class="form-control py-2" required placeholder="نام کاربری">
-                            </div>
-                            <div class="mb-3 text-start">
-                                <label class="form-label fw-bold small">کلمه عبور</label>
-                                <input type="password" id="loginPassword" class="form-control py-2" required placeholder="••••••••">
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 mt-3 fw-bold">ورود به حساب</button>
-                        </form>
-                        <div class="text-center mt-4 pt-3 border-top">
-                            <span class="text-muted small">حساب کاربری ندارید؟</span>
-                            <a href="#" class="text-primary text-decoration-none fw-bold small ms-1" onclick="switchAuthMode('register')">ثبت‌نام کنید</a>
-                        </div>
-                    </div>
-
-                    <!-- Register Form -->
-                    <div id="register-form-container" class="d-none">
-                        <form onsubmit="handleRegister(event)">
-                            <div class="mb-3 text-start">
-                                <label class="form-label fw-bold small">نام کاربری</label>
-                                <input type="text" id="regUsername" class="form-control py-2" required placeholder="نام کاربری">
-                            </div>
-                            <div class="mb-3 text-start">
-                                <label class="form-label fw-bold small">ایمیل</label>
-                                <input type="email" id="regEmail" class="form-control py-2" required placeholder="email@example.com">
-                            </div>
-                            <div class="mb-3 text-start">
-                                <label class="form-label fw-bold small">کلمه عبور</label>
-                                <input type="password" id="regPassword" class="form-control py-2" required placeholder="••••••••">
-                            </div>
-                            <div class="mb-3 text-start">
-                                <label class="form-label fw-bold small">نقش کاربری</label>
-                                <select id="regRole" class="form-select py-2">
-                                    <option value="PARTICIPANT">شرکت‌کننده (Participant)</option>
-                                    <option value="ORGANIZER">برگزارکننده رویداد (Organizer)</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-success w-100 rounded-3 py-2 mt-3 fw-bold">ایجاد حساب جدید</button>
-                        </form>
-                        <div class="text-center mt-4 pt-3 border-top">
-                            <span class="text-muted small">قبلاً ثبت‌نام کرده‌اید؟</span>
-                            <a href="#" class="text-primary text-decoration-none fw-bold small ms-1" onclick="switchAuthMode('login')">وارد شوید</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/app.js?v=34.0"></script>
-</body>
-</html>
+    <div class="row g-4" id="eventsList"></div>
+</div>
+{% endblock %}
