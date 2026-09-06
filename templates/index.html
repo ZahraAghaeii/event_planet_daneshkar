@@ -7,7 +7,7 @@
     <!-- Bootstrap 5 RTL & Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/static/css/style.css?v=33.0">
+    <link rel="stylesheet" href="/static/css/style.css?v=34.0">
     <style>
         .extra-small { font-size: 0.78rem; }
         ::placeholder { color: #94a3b8 !important; opacity: 1; }
@@ -68,7 +68,6 @@
                     <i class="bi bi-moon-stars"></i> دارک مود
                 </button>
 
-                <!-- تگ نقش و دکمه‌های اضافی از بالای هدر کامل حذف شدند -->
                 <div id="userInfo" class="d-none"></div>
                 <button class="btn btn-primary btn-sm rounded-pill px-4" data-bs-toggle="offcanvas" data-bs-target="#userSidebar" id="topAuthBtn">ورود / ثبت‌نام</button>
             </div>
@@ -297,15 +296,13 @@
     <!-- Auth Modal -->
     <div class="modal fade" id="authModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-content rounded-4 shadow-lg p-3">
                 <div class="modal-header border-0 pb-0">
-                    <div class="d-flex w-100 gap-2 p-1 rounded-3 bg-secondary bg-opacity-10">
-                        <button class="btn btn-primary flex-fill fw-bold rounded-3" id="tab-login-btn" onclick="switchAuthTab('login')">ورود به حساب</button>
-                        <button class="btn btn-outline-secondary flex-fill fw-bold rounded-3" id="tab-reg-btn" onclick="switchAuthTab('register')">ثبت‌نام جدید</button>
-                    </div>
-                    <button type="button" class="btn-close ms-2" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title fw-bold" id="authModalTitle">ورود به حساب کاربری</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
+                    <!-- Login Form -->
                     <div id="login-form-container">
                         <form onsubmit="handleLogin(event)">
                             <div class="mb-3 text-start">
@@ -318,7 +315,13 @@
                             </div>
                             <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 mt-3 fw-bold">ورود به حساب</button>
                         </form>
+                        <div class="text-center mt-4 pt-3 border-top">
+                            <span class="text-muted small">حساب کاربری ندارید؟</span>
+                            <a href="#" class="text-primary text-decoration-none fw-bold small ms-1" onclick="switchAuthMode('register')">ثبت‌نام کنید</a>
+                        </div>
                     </div>
+
+                    <!-- Register Form -->
                     <div id="register-form-container" class="d-none">
                         <form onsubmit="handleRegister(event)">
                             <div class="mb-3 text-start">
@@ -342,6 +345,10 @@
                             </div>
                             <button type="submit" class="btn btn-success w-100 rounded-3 py-2 mt-3 fw-bold">ایجاد حساب جدید</button>
                         </form>
+                        <div class="text-center mt-4 pt-3 border-top">
+                            <span class="text-muted small">قبلاً ثبت‌نام کرده‌اید؟</span>
+                            <a href="#" class="text-primary text-decoration-none fw-bold small ms-1" onclick="switchAuthMode('login')">وارد شوید</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -349,6 +356,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/app.js?v=33.0"></script>
+    <script src="/static/js/app.js?v=34.0"></script>
 </body>
 </html>

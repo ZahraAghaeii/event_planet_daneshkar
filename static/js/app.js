@@ -61,9 +61,11 @@ function loadSidebarUserInfo() {
         sidebarUserRole.innerText = `نقش: ${currentRole === 'ORGANIZER' ? 'برگزارکننده' : 'شرکت‌کننده'}`;
         sidebarUserRole.className = `badge ${currentRole === 'ORGANIZER' ? 'bg-warning text-dark' : 'bg-info'}`;
         
-        // وقتی کاربر لاگین کرده، دکمه بالا نام خود کاربر را نشان می‌دهد
+        // وقتی کاربر لاگین کرده، دکمه بالا نام خود کاربر را نشان می‌دهد و سایدبار را باز می‌کند
         topAuthBtn.innerText = `👤 ${currentUser}`;
         topAuthBtn.className = "btn btn-outline-primary btn-sm rounded-pill px-4 fw-bold";
+        topAuthBtn.setAttribute("data-bs-toggle", "offcanvas");
+        topAuthBtn.setAttribute("data-bs-target", "#userSidebar");
 
         if (currentRole === 'ORGANIZER') {
             organizerPanelBtn.classList.remove("d-none");
@@ -82,13 +84,16 @@ function loadSidebarUserInfo() {
         sidebarUsername.innerText = "مهمان عزیز";
         sidebarUserRole.innerText = "نقش: بازدیدکننده";
         
-        // وقتی کاربر لاگین نکرده، دکمه بالا همان ورود / ثبت‌نام است
+        // وقتی کاربر لاگین نکرده، دکمه بالا مودال ورود/ثبت‌نام را باز می‌کند
         topAuthBtn.innerText = "ورود / ثبت‌نام";
         topAuthBtn.className = "btn btn-primary btn-sm rounded-pill px-4";
+        topAuthBtn.setAttribute("data-bs-toggle", "modal");
+        topAuthBtn.setAttribute("data-bs-target", "#authModal");
+
         organizerPanelBtn.classList.add("d-none");
 
         sidebarAuthArea.innerHTML = `
-            <button class="btn btn-primary w-100 rounded-3 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#authModal">
+            <button class="btn btn-primary w-100 rounded-3 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#authModal" data-bs-dismiss="offcanvas">
                 <i class="bi bi-box-arrow-in-left"></i> ورود یا ثبت‌نام
             </button>
         `;
@@ -131,9 +136,21 @@ function logoutUser() {
     location.reload();
 }
 
-function switchAuthTab(type) {
-    document.getElementById("login-form-container").classList.toggle("d-none", type !== 'login');
-    document.getElementById("register-form-container").classList.toggle("d-none", type !== 'register');
+// تابع جابجایی بین حالت ورود و ثبت‌نام در مودال
+function switchAuthMode(type) {
+    const loginContainer = document.getElementById("login-form-container");
+    const registerContainer = document.getElementById("register-form-container");
+    const modalTitle = document.getElementById("authModalTitle");
+
+    if (type === 'login') {
+        loginContainer.classList.remove("d-none");
+        registerContainer.classList.add("d-none");
+        if (modalTitle) modalTitle.innerText = "ورود به حساب کاربری";
+    } else {
+        loginContainer.classList.add("d-none");
+        registerContainer.classList.remove("d-none");
+        if (modalTitle) modalTitle.innerText = "ثبت‌نام در پلتفرم";
+    }
 }
 
 function handleCategoryClick(category) {
