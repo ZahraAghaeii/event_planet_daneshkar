@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: event_planet_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: fati82
+      POSTGRES_PASSWORD: 20041382
     ports:
       - "5433:5432"
 

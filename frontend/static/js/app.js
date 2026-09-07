@@ -642,6 +642,7 @@ function filterMyEvents() {
     document.getElementById("sectionTitle").innerHTML = `<i class="bi bi-calendar-plus text-warning"></i> رویدادهای ایجاد شده توسط من`;
 }
 
+
 function filterMyRegistrations() {
     const currentUser = localStorage.getItem("username");
     if (!currentUser) {
@@ -651,5 +652,9 @@ function filterMyRegistrations() {
     const allEvents = getGlobalEvents();
     const registeredEvents = allEvents.filter(e => e.participants && e.participants.some(p => p.username === currentUser));
     renderEvents(registeredEvents);
-    document.getElementById("sectionTitle").innerHTML = `<i class="bi bi-journal-check text-success"></i> رویدادهای ثبت‌نام‌شده من`;
+    
+    const sectionTitle = document.getElementById("sectionTitle");
+    if (sectionTitle) {
+        sectionTitle.innerHTML = `<i class="bi bi-journal-check text-success"></i> رویدادهای ثبت‌نام‌شده من`;
+    }
 }
