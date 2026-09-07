@@ -1,4 +1,4 @@
-# 🌍 Event Planet
+#  Event Planet
 
 <div align="center">
 
@@ -4993,7 +4993,7 @@ The architecture is intentionally modular so that individual parts of the system
 
 <div align="center">
 
-## 🌍 Event Planet
+##  Event Planet
 
 ### Build events. Connect people. Manage experiences.
 
