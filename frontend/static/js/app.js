@@ -281,7 +281,7 @@ function renderEvents(events) {
     visibleEvents.forEach(event => {
         const remainingCap = event.capacity - (event.registered_count || 0);
         const isOrganizer = currentRole === 'ORGANIZER' && event.organizer === currentUser;
-        const isRegistered = event.participants && event.participants.some(p => p.username === currentUser);
+        const isRegistered = event.participants && event.participants.some(p => p.username && p.username.trim().toLowerCase() === (currentUser || "").trim().toLowerCase());
 
         const startDateStr = event.start_date ? new Date(event.start_date).toLocaleString('fa-IR', { dateStyle: 'short', timeStyle: 'short' }) : 'تعیین نشده';
         const endDateStr = event.end_date ? new Date(event.end_date).toLocaleString('fa-IR', { dateStyle: 'short', timeStyle: 'short' }) : 'تعیین نشده';
@@ -361,7 +361,7 @@ function registerEvent(id) {
     if (evt && evt.capacity > evt.registered_count) {
         if (!evt.participants) evt.participants = [];
         
-        if (evt.participants.some(p => p.username === currentUser)) {
+        if (evt.participants.some(p => p.username && p.username.trim().toLowerCase() === currentUser.trim().toLowerCase())) {
             alert("شما قبلاً در این رویداد ثبت‌نام کرده‌اید!");
             return;
         }
@@ -546,9 +546,14 @@ function renderFeedbacks(evt) {
     const addBox = document.getElementById("addFeedbackContainer");
     container.innerHTML = "";
 
-    const currentUser = localStorage.getItem("username");
-    const isRegistered = evt.participants && evt.participants.some(p => p.username === currentUser);
+    const currentUser = (localStorage.getItem("username") || "").trim().toLowerCase();
     
+    // بررسی دقیق ثبت‌نام با تطبیق ایمن نام کاربری بدون حساسیت به حروف کوچک و بزرگ یا فاصله اضافی
+    const isRegistered = evt.participants && evt.participants.some(p => 
+        p.username && p.username.trim().toLowerCase() === currentUser
+    );
+    
+    // باکس کامنت فقط در صورتی باز می‌شود که کاربر ثبت‌نام کرده باشد و وضعیت رویداد FINISHED باشد
     if (isRegistered && evt.status === 'FINISHED') {
         addBox.classList.remove("d-none");
     } else {
@@ -641,7 +646,6 @@ function filterMyEvents() {
     renderEvents(myEvents);
     document.getElementById("sectionTitle").innerHTML = `<i class="bi bi-calendar-plus text-warning"></i> رویدادهای ایجاد شده توسط من`;
 }
-
 
 function filterMyRegistrations() {
     const currentUser = localStorage.getItem("username");
