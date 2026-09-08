@@ -1,4 +1,4 @@
-# 🌍 Event Planet
+#  Event Planet
 
 <div align="center">
 
@@ -1342,7 +1342,7 @@ https://github.com/ZahraAghaeii
 
 <div align="center">
 
-## 🌍 Event Planet
+##  Event Planet
 
 ### Plan Events. Connect People. Create Experiences.
 
